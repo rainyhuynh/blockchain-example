@@ -6,10 +6,11 @@ class Bank
       @owner = attribute[:owner].downcase
       @total_supply = attribute[:total_supply]
       @balances = { @owner.to_sym => @total_supply}
-      # { "Rainy": 1000000}
     end
 
     def create_account(username)
+        return unless @balances[username.downcase.to_sym].nil?
+
         @balances[username.downcase.to_sym] = 0
     end
 

@@ -44,5 +44,11 @@ RSpec.describe Bank do
         expect(bank.balance_of('rainy')).to eq(1_000_000) 
         expect(bank.balance_of('ti')).to eq(0) 
     end
+
+    it "does not overwrite accounts " do
+        bank.create_account('rainy')
+        expect(bank.balance_of('rainy')).to eq(1_000_000)  
+    end
+    
     
 end
