@@ -1,24 +1,23 @@
+require 'faraday'
+
 class Client
-    
-    attr_reader :bank, :username
+    URL = 'http://localhost'
 
-    def initialize(bank, username)
-        @bank = bank
-        @username = username
-        find_or_create_account(username)
-    end
+    def self.gossip(port, peers, blockchain)
+        begin
+            Faraday.post("#{URL}:#{port}/gossip", peers: peers, blockchain: blockchain).body 
 
-    def find_or_create_account(username)
-        if get_balance.nil?
-            bank.create_account(username)
+        rescue Faraday::ConnectFailded => e
+            raise
         end
     end
 
-    def get_balance
-        bank.balance_of(username)
+    def self.get_pub_key(port)
+        Faraday.get("#{URL}:#{port}/pub_key").body
     end
 
-    def transfer(to, amount)
-        bank.transfer(username, to, amount)
+    def self.send_money(port, to, amount)
+        Faraday.post("#{URL}:#{port}/send_money", to: to, amount: amount).body
     end
+
 end
